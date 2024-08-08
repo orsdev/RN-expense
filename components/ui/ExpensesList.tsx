@@ -35,7 +35,7 @@ function ExpenseItem({ item }: IRenderItem) {
                     <Text style={{
                         marginBottom: 2
                     }}>{item.description}</Text>
-                    <Text>{item.date.toLocaleDateString()}</Text>
+                    <Text>{new Date(item.date).toLocaleDateString()}</Text>
                 </View>
                 <View>
                     <Text>${item.amount}</Text>

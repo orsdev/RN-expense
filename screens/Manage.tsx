@@ -1,11 +1,11 @@
 import { Ionicons } from "@expo/vector-icons";
 import { RouteProp } from "@react-navigation/native";
 import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useEffect, useLayoutEffect } from "react"
-import { Pressable, StyleSheet, Text, View } from "react-native"
-import { COLORS } from "../constants/colors.conts";
+import { useLayoutEffect } from "react"
+import { Pressable, StyleSheet, View } from "react-native"
 import CustomButton from "../components/ui/CustomButton";
 import { useExpensesStore } from "../store";
+import ExpenseForm from "../components/ExpenseForm";
 
 type RootStackParamList = {
     ManageExpense: { expenseId: string };
@@ -40,16 +40,6 @@ const ManageExpensePage = ({ route, navigation }: ManageExpensePageProps) => {
         navigation.goBack()
     }
 
-    const confirmHandler = () => {
-        if(isEditing){
-            updateExpense(expenseId, {amount: 60000,description: '45tertre', date: new Date()});
-            console.log('updated')
-        }else {
-            addExpense({amount: 50, description: 'new desc', date: new Date()})
-        }
-        navigation.goBack()
-    }
-
     return (
         <View style={styles.container}>
             <View style={{
@@ -59,8 +49,9 @@ const ManageExpensePage = ({ route, navigation }: ManageExpensePageProps) => {
                 alignItems: 'center'
             }}>
                 <CustomButton mode="flat" onPress={cancelHandler}>Cancel</CustomButton>
-                <CustomButton mode="default" onPress={confirmHandler}>{isEditing ? 'Update' : 'Add'}</CustomButton>
+                {/* <CustomButton mode="default" onPress={confirmHandler}>{isEditing ? 'Update' : 'Add'}</CustomButton> */}
             </View>
+            <ExpenseForm isEditing={isEditing} expenseId={expenseId} />
             <View style={styles.buttonContainer}>
                 {isEditing && (
                     <Pressable
