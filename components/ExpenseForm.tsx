@@ -17,17 +17,17 @@ const validationSchema = object().shape({
 
 
 
-const ExpenseForm = ({isEditing, expenseId}: {isEditing: boolean, expenseId: string}) => {
+const ExpenseForm = ({ isEditing, expenseId }: { isEditing: boolean, expenseId: string }) => {
     const navigation = useNavigation();
     const { addExpense, updateExpense, expenses } = useExpensesStore();
 
     const findExpense = expenses.find(item => item.id === expenseId);
-    
+
 
     const { handleSubmit, control } = useForm({
         defaultValues: {
             amount: findExpense?.amount?.toString() ?? undefined,
-            date: findExpense?.date?.toISOString().slice(0, 10) ?? undefined,
+            date: findExpense ? new Date(findExpense?.date)?.toISOString().slice(0, 10) : '',
             description: findExpense?.description ?? ''
         } as any,
         resolver: yupResolver(validationSchema)
@@ -43,9 +43,9 @@ const ExpenseForm = ({isEditing, expenseId}: {isEditing: boolean, expenseId: str
             date: new Date(data.date)
         }
 
-        if(isEditing){
+        if (isEditing) {
             updateExpense(expenseId, updatedData);
-        }else {
+        } else {
             addExpense(updatedData)
         }
         navigation.goBack()
