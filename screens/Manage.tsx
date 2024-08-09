@@ -6,6 +6,8 @@ import { Pressable, StyleSheet, View } from "react-native"
 import CustomButton from "../components/ui/CustomButton";
 import { useExpensesStore } from "../store";
 import ExpenseForm from "../components/ExpenseForm";
+import { deleteExpensesMutation } from "../services/expenses";
+import { alertMessage } from "../utils/alert.utils";
 
 type RootStackParamList = {
     ManageExpense: { expenseId: string };
@@ -19,7 +21,7 @@ type IProps = {
 }
 
 const ManageExpensePage = ({ route, navigation }: ManageExpensePageProps) => {
-    const { removeExpense, addExpense, updateExpense } = useExpensesStore();
+    const { removeExpense } = useExpensesStore();
 
 
     const expenseId = route.params?.expenseId;
@@ -31,9 +33,24 @@ const ManageExpensePage = ({ route, navigation }: ManageExpensePageProps) => {
         })
     }, [navigation, isEditing]);
 
-    const deleteExpense = () => {
-        removeExpense(expenseId);
-        navigation.goBack();
+    const deleteExpense = async () => {
+        try {
+            await deleteExpensesMutation(expenseId)
+            // update locally
+            removeExpense(expenseId);
+            alertMessage({
+                title: 'Deleted',
+                message: 'Expense deleted successfully!',
+                buttonText: 'Close'
+            })
+            navigation.goBack()
+        } catch (error: any) {
+            alertMessage({
+                title: 'Error',
+                message: error?.message,
+                buttonText: 'Close'
+            })
+        }
     };
 
     const cancelHandler = () => {

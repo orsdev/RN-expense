@@ -1,14 +1,10 @@
 import { StyleSheet, View, Text } from "react-native"
 import { COLORS } from "../../constants/colors.conts";
+import { ExpenseType } from "../../store";
 
 export interface ISummary {
     name: string;
-    expenses: Array<{
-        id: string;
-        date: Date,
-        description: string;
-        amount: number
-    }>
+    expenses: Array<ExpenseType>
 }
 export const ExpensesSummary = ({ name, expenses }: ISummary) => {
     const expensesSum = expenses.reduce((sum, expense) => sum + expense.amount, 0);

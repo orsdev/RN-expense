@@ -6,6 +6,8 @@ import { number, object, string } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup"
 import CustomButton from "./ui/CustomButton";
 import { useNavigation } from "@react-navigation/native";
+import { addExpensesMutation, updateExpensesMutation } from "../services/expenses";
+import { alertMessage } from "../utils/alert.utils";
 
 const validationSchema = object().shape({
     amount: number()
@@ -33,7 +35,7 @@ const ExpenseForm = ({ isEditing, expenseId }: { isEditing: boolean, expenseId: 
         resolver: yupResolver(validationSchema)
     });
 
-    const onSubmit = (data: Omit<ExpenseType, 'id' | 'date'> & {
+    const onSubmit = async (data: Omit<ExpenseType, 'date'> & {
         date: string,
         amount: string;
     }) => {
@@ -44,11 +46,46 @@ const ExpenseForm = ({ isEditing, expenseId }: { isEditing: boolean, expenseId: 
         }
 
         if (isEditing) {
-            updateExpense(expenseId, updatedData);
+            try {
+                await updateExpensesMutation(updatedData, updatedData.id as string)
+                // update locally
+                updateExpense(expenseId, updatedData);
+
+                alertMessage({
+                    title: 'Update',
+                    message: 'Expense updated successfully!',
+                    buttonText: 'Close'
+                })
+                navigation.goBack()
+            } catch (error: any) {
+                alertMessage({
+                    title: 'Error',
+                    message: error?.message,
+                    buttonText: 'Close'
+                })
+            }
         } else {
-            addExpense(updatedData)
+
+            try {
+               const response = await addExpensesMutation(updatedData);
+               const responseId = response.data?.name;
+                // add locally
+                addExpense(updatedData, responseId)
+                alertMessage({
+                    title: 'Success!',
+                    message: 'A new expense was added',
+                    buttonText: 'Close'
+                })
+                navigation.goBack()
+            } catch (error: any) {
+                alertMessage({
+                    title: 'Error',
+                    message: error?.message,
+                    buttonText: 'Close'
+                })
+            }
         }
-        navigation.goBack()
+
     }
 
     return (

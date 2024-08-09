@@ -1,20 +1,14 @@
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native"
 import { COLORS } from "../../constants/colors.conts";
 import { useNavigation } from "@react-navigation/native";
-
-interface IExpense {
-    id: string;
-    date: Date,
-    description: string;
-    amount: number
-};
+import { ExpenseType } from "../../store";
 
 interface IExpenseList {
-    expenses: Array<IExpense>
+    expenses: Array<ExpenseType>
 }
 
 interface IRenderItem {
-    item: IExpense;
+    item: ExpenseType;
 }
 
 function ExpenseItem({ item }: IRenderItem) {
@@ -51,7 +45,7 @@ export const ExpensesList = ({ expenses }: IExpenseList) => {
         <FlatList
             data={expenses}
             renderItem={({ item }) => <ExpenseItem item={item} />}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item?.id as string}
         />
         {expenses && !(!!expenses.length) && <Text style={{
             textAlign: 'center',
