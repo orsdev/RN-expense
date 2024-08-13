@@ -10,6 +10,7 @@ interface ITextBox {
     multiline?: boolean;
     autoCorrect?: boolean; //TODO: Prevent from correcting user email or intentional data
     numberOfLines?: number;
+    autoCapitalize?: "none" | "sentences" | "words" | "characters";
     maxLength?: number;
     errorMessage?: string
 };
@@ -23,6 +24,8 @@ const TextBox = ({ label, value, type, errorMessage = '', placeholder = '', hand
                 onChangeText={handleChange}
                 value={value}
                 placeholder={placeholder}
+                autoCorrect={false || rest.autoCorrect}
+                autoCapitalize="none"
                 keyboardType={type}
                 {...rest}
             />

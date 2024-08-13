@@ -8,6 +8,7 @@ import { useExpensesStore } from "../store";
 import ExpenseForm from "../components/ExpenseForm";
 import { deleteExpensesMutation } from "../services/expenses";
 import { alertMessage } from "../utils/alert.utils";
+import MainLayout from "../layout/MainLayout";
 
 type RootStackParamList = {
     ManageExpense: { expenseId: string };
@@ -58,6 +59,7 @@ const ManageExpensePage = ({ route, navigation }: ManageExpensePageProps) => {
     }
 
     return (
+        <MainLayout>
         <View style={styles.container}>
             <View style={{
                 flexDirection: 'row',
@@ -80,6 +82,7 @@ const ManageExpensePage = ({ route, navigation }: ManageExpensePageProps) => {
                     </Pressable>)}
             </View>
         </View>
+        </MainLayout>
     )
 }
 

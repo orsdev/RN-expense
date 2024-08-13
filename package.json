@@ -22,7 +22,9 @@
     "react-hook-form": "^7.52.1",
     "react-native": "0.74.3",
     "yup": "^1.4.0",
-    "zustand": "^4.5.4"
+    "zustand": "^4.5.4",
+    "expo-secure-store": "~13.0.2",
+    "expo-splash-screen": "~0.27.5"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

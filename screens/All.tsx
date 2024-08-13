@@ -1,14 +1,17 @@
 import { StyleSheet, Text, View } from "react-native"
 import { ExpenseOutput } from "../components/ui/ExpensesOutput";
 import { useExpensesStore } from "../store";
+import MainLayout from "../layout/MainLayout";
 
 const AllExpensePage = () => {
     const { expenses } = useExpensesStore();
 
     return (
-        <View style={styles.container}>
-            <ExpenseOutput name="Total" expenses={expenses}/>
-        </View>
+        <MainLayout>
+            <View style={styles.container}>
+                <ExpenseOutput name="Total" expenses={expenses} />
+            </View>
+        </MainLayout>
     )
 }
 

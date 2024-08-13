@@ -1,10 +1,11 @@
 import { StyleSheet, View } from "react-native"
 import { ExpenseOutput } from "../components/ui/ExpensesOutput";
-import { ExpenseType, useExpensesStore } from "../store";
+import { ExpenseType, useAuthStore, useExpensesStore } from "../store";
 import { useEffect, useState } from "react";
 import { getExpensesQuery } from "../services/expenses";
 import { alertMessage } from "../utils/alert.utils";
 import { Spinner } from "../components/ui/Spinner";
+import MainLayout from "../layout/MainLayout";
 
 const RecentExpensePage = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -13,6 +14,7 @@ const RecentExpensePage = () => {
     useEffect(() => {
         getExpenses()
     }, []);
+
 
     const getExpenses = async () => {
         setIsLoading(true)
@@ -47,12 +49,12 @@ const RecentExpensePage = () => {
     })
 
     return (
-        <>
+        <MainLayout>
             {isLoading && <Spinner />}
             <View style={styles.container}>
                 <ExpenseOutput name="Last 7 days" expenses={recentExpenses} />
             </View>
-        </>
+        </MainLayout>
     )
 }
 
